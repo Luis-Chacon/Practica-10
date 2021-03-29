@@ -11,7 +11,7 @@ export class ReservacionService
     private reservacion: Reservacion[]=[
         {
             imgUrl: "https://frankata.com/wp-content/uploads/2019/01/800x600carlsjr-1170x877.jpg",
-            restaurante: "Crals Jr.",
+            restaurante: "Carls Jr.",
             fecha: "Lunes 29 de Marzo - 17:00"
         },
         {
@@ -26,7 +26,7 @@ export class ReservacionService
         },
         {
             imgUrl: "https://frankata.com/wp-content/uploads/2019/01/800x600carlsjr-1170x877.jpg ",
-            restaurante: "Crals Jr.",
+            restaurante: "Carls Jr.",
             fecha: "Viernes 21 de Mayo - 13:00"
         },
 
