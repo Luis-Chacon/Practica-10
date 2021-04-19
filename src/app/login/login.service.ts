@@ -73,7 +73,19 @@ export class LoginService {
     const expTime = new Date( new Date().getTime() + (+ userData.expiresIn * 1000));
     this._usuario.next(new Usuario(userData.localId, userData.email, userData.idToken, expTime));
   }
-
   
 
+  get usuarioId()
+  {
+    return this._usuario.asObservable().pipe(map(user => {
+      if(user)
+      {
+        return user.id;
+      }
+      else 
+      {
+        return null;
+      }
+    }));
+  }
 }

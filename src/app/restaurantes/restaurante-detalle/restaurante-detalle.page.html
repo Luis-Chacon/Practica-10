@@ -5,7 +5,11 @@
       <ion-back-button defaulHref="/restaurante"></ion-back-button>
     </ion-buttons>
     
-    <ion-title>{{restaurante.titulo}}</ion-title>
+    <div *ngIf="isLoading">
+      <ion-spinner color="primary"></ion-spinner>
+    </div>
+
+    <ion-title *ngIf="!isLoading">{{restaurante.titulo}}</ion-title>
     
     <ion-buttons slot="primary">
       <ion-button (click)="onDeleteRest()">
@@ -18,7 +22,11 @@
 
 <ion-content class="ion-text-center">
 
-  <ion-grid>
+  <div *ngIf="isLoading">
+    <ion-spinner color="primary"></ion-spinner>
+  </div>
+
+  <ion-grid *ngIf="!isLoading">
 
     <ion-row>
       <ion-col>

@@ -1,6 +1,11 @@
-export interface Reservacion
+export class Reservacion
 {
-    imgUrl: string;
-    restaurante: string;
-    fecha: string;
+    constructor
+    (
+        public Id:string,
+        public imgUrl: string,
+        public restaurante: string,
+        public fecha: string,
+        public usuarioId: string
+    ){}
 }

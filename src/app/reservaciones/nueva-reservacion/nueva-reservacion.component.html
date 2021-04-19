@@ -21,7 +21,7 @@
   <form (ngSubmit)="onReservar()" #formNew="ngForm" >
     <ion-grid>
       <ion-row>
-        <ion-col sixe="6" offset="3" class="ion-text-center">
+        <ion-col sixe="12" class="ion-text-center">
           <ion-img [src]="restaurante.imgUrl"></ion-img>
         </ion-col>
       </ion-row>
@@ -33,7 +33,7 @@
             <ion-datetime 
               display-format="MMM DD YYYY"
               picker-format="YY MMM DD"
-              monthShortNames="Enero,Febrero,Marzo,Abril,Mayo,Junio,Junio,Julio,Agosto,Septiembre,Octubre,Nomviembre,Diciembre"
+              monthShortNames="Enero,Febrero,Marzo,Abril,Mayo,Junio,Julio,Agosto,Septiembre,Octubre,Noviembre,Diciembre"
               [ngModel]="fecha"
               required
               name="horario"

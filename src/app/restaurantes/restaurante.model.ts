@@ -1,7 +1,11 @@
-export interface Restaurante
+export class Restaurante
 {
-    id: number;
-    titulo: string;
-    imgUrl: string;
-    platillos: string[];
+    constructor(
+
+        public id: string,
+        public titulo: string,
+        public imgUrl: string,
+        public platillos: string[]
+    ){}
+
 }

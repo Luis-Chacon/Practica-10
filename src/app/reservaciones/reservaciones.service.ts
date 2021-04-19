@@ -1,4 +1,9 @@
+import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { BehaviorSubject } from "rxjs";
+import { map,tap } from "rxjs/operators";
+import { environment } from "src/environments/environment";
+import { LoginService } from "../login/login.service";
 import { Restaurante } from "../restaurantes/restaurante.model";
 import { Reservacion } from './reservacion.model';
 
@@ -8,41 +13,66 @@ import { Reservacion } from './reservacion.model';
 
 export class ReservacionService
 {
-    private reservacion: Reservacion[]=[
-        {
-            imgUrl: "https://frankata.com/wp-content/uploads/2019/01/800x600carlsjr-1170x877.jpg",
-            restaurante: "Carls Jr.",
-            fecha: "Lunes 29 de Marzo - 17:00"
-        },
-        {
-            imgUrl: "https://i.pinimg.com/280x280_RS/e3/1e/e7/e31ee7950607eb55c87e199fd5ab6dd7.jpg ",
-            restaurante: "Cabo Grill",
-            fecha: "Martes 06 de Abril - 15:00"
-        },
-        {
-            imgUrl: "https://cdn.worldvectorlogo.com/logos/super-salads.svg",
-            restaurante: "Super Salads",
-            fecha: "Jueves 13 se Junio - 18:30"
-        },
-        {
-            imgUrl: "https://frankata.com/wp-content/uploads/2019/01/800x600carlsjr-1170x877.jpg ",
-            restaurante: "Carls Jr.",
-            fecha: "Viernes 21 de Mayo - 13:00"
-        },
+    
+    private _reservaciones = new BehaviorSubject<Reservacion[]>([]);
+    usuarioId = null;
+    
+    get reservaciones()
+    {
+        return this._reservaciones.asObservable();
+    }
 
-    ];
-    constructor(){}
-
-    getAllReservaciones(){
-        return[...this.reservacion];
+    fetchReservaciones()
+    {
+        console.log('fetchResevaciones');
+        return this.http.get<{[key:string] : Reservacion}>(
+            environment.firebaseUrl + 'reservaciones.json?orderBy="usuarioId"&equalTo="' + this.usuarioId + '"'
+        )
+        .pipe(map(dta =>{
+            const rests = [];
+            for(const key in dta){
+                if(dta.hasOwnProperty(key)){
+                    rests.push(new Reservacion(
+                        key,
+                        dta[key].imgUrl,
+                        dta[key].restaurante,
+                        dta[key].fecha,
+                        dta[key].usuarioId
+                    ));
+                }
+            }
+            return rests;
+        }),
+        tap(rest => {
+            this._reservaciones.next(rest);
+        }));
     }
 
     addReservacion(rest: Restaurante, horario: string)
     {
-        this.reservacion.push({
-            imgUrl: rest.imgUrl,
-            restaurante: rest.titulo,
-            fecha: horario
+        console.log(rest);
+        console.log(horario);
+        const rsv = new Reservacion(
+            null,
+            rest.imgUrl,
+            rest.titulo,
+            horario,
+            this.usuarioId
+        );
+
+        this.http.post<any>(environment.firebaseUrl + 'reservaciones.json',{...rsv}).subscribe(data => {
+            console.log(data);
+        });
+    }
+
+    constructor
+    (
+        private http: HttpClient,
+        private loginService: LoginService
+    )
+    {
+        this.loginService.usuarioId.subscribe(usuarioId => {
+            this.usuarioId = usuarioId;
         });
     }
 }
