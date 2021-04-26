@@ -23,8 +23,7 @@ export class NuevaReservacionComponent implements OnInit {
   {
     this.mondalCtrl.dismiss({
       restaurante: this.restaurante,
-      horario: new Date(this.myFrom.value['horario'])},
-      'confirm');
+      horario: new Date(this.myFrom.value['horario']).toLocaleDateString(undefined,{day:'numeric', month:'long', year:'numeric'}).replace('/','de')},'confirm');
   }
 
   onCancel()
