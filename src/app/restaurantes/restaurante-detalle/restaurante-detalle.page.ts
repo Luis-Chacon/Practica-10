@@ -109,6 +109,7 @@ export class RestauranteDetallePage implements OnInit
 
   openReservaModal(modo:'select' | 'hoy')
   {
+    console.log('openReservaModal');
     this.modalCtrl.create({
       component: NuevaReservacionComponent,
       componentProps: {restaurante: this.restaurante, mode: modo}
@@ -118,13 +119,15 @@ export class RestauranteDetallePage implements OnInit
        return modalEl.onDidDismiss();
      })
        .then(result =>{
-       if(result.role === 
-        'confirm'){
+       if(result.role === 'confirm'){
          this.loadingCtrl.create({message: 'reservando...'})
          .then(loadingEl => {
            loadingEl.present();
           console.log(result);
-           this.reservacionService.addReservacion(result.data.restaurante,result.data.horario);
+           this.reservacionService.addReservacion(
+             result.data.restaurante,
+             result.data.nombre,
+             result.data.horario);
 
            loadingEl.dismiss();
 

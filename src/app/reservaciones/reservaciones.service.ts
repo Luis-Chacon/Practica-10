@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
-import { map,tap } from "rxjs/operators";
+import { map,switchMap,take,tap } from "rxjs/operators";
 import { environment } from "src/environments/environment";
 import { LoginService } from "../login/login.service";
 import { Restaurante } from "../restaurantes/restaurante.model";
@@ -36,6 +36,7 @@ export class ReservacionService
                         key,
                         dta[key].imgUrl,
                         dta[key].restaurante,
+                        dta[key].nombre,
                         dta[key].fecha,
                         dta[key].usuarioId
                     ));
@@ -48,7 +49,7 @@ export class ReservacionService
         }));
     }
 
-    addReservacion(rest: Restaurante, horario: string)
+    addReservacion(rest: Restaurante,nombre: string, horario: string)
     {
         console.log(rest);
         console.log(horario);
@@ -56,11 +57,51 @@ export class ReservacionService
             null,
             rest.imgUrl,
             rest.titulo,
+            nombre,
             horario,
             this.usuarioId
         );
 
         this.http.post<any>(environment.firebaseUrl + 'reservaciones.json',{...rsv}).subscribe(data => {
+            console.log(data);
+        });
+    }
+
+    removeReservacion(reservacionId: string)
+    {
+        console.log('removeReservacion');
+        //let url = `${environment.firebaseUrl}reservaciones/${reservacionId}.json`;
+        //return this.http.delete(url)
+        return this.http.delete(`${environment.firebaseUrl}reservaciones/${reservacionId}.json`)
+            .pipe(switchMap (() =>{
+                return this.reservaciones;
+            }),take(1),tap(rsvs => {
+                this._reservaciones.next(rsvs.filter(r => r.Id !== reservacionId))
+            }))
+    }
+
+    getReservacion(reservacionId: string)
+    {
+        console.log('getReservacion');
+        const url= environment.firebaseUrl + `reservaciones/${reservacionId}.json`;
+
+        return this.http.get<Reservacion>(url)
+            .pipe(map(dta => {
+                return new Reservacion(
+                    reservacionId,
+                    dta.imgUrl,
+                    dta.restaurante,
+                    dta.nombre,
+                    dta.fecha,
+                    dta.usuarioId);
+            }));
+    }
+
+    updateReservacion(reservacionId: string, reservacion: Reservacion)
+    {
+        console.log('updateReservacion');
+        const url = environment.firebaseUrl + `reservaciones/${reservacionId}.json`;
+        this.http.put<any>(url,{...reservacion}).subscribe( data => {
             console.log(data);
         });
     }
