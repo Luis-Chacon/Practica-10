@@ -16,52 +16,53 @@ export class ReservacionDetallePage implements OnInit {
   reservacion: Reservacion;
   reservacionSub: Subscription;
   isLoading = false;
-
+  
   nombre:string;
-
-  @ViewChild('formNew') myForm: NgForm;
+  @ViewChild('fromNew') myForm: NgForm;
 
   constructor(
-    private activatedRouter: ActivatedRoute,
+    private activatedRoute: ActivatedRoute,
     private reservacionService: ReservacionService,
     private navCtrl: NavController,
     private router: Router,
     private alertCtrl: AlertController
-  ) { }
+  ) {}
 
   ngOnInit() 
   {
-    this.activatedRouter.paramMap.subscribe( paramM => {
+    this.activatedRoute.paramMap.subscribe(paramM => {
       const param: string = 'reservacionId';
       if(!paramM.has(param))
       {
         this.navCtrl.navigateBack('reservaciones');
         return;
       }
+
       this.isLoading = true;
 
       const reservacionId: string = paramM.get(param);
-      this.reservacionSub = this.reservacionService.getReservacion(reservacionId).subscribe( rsv => {
+      this.reservacionSub = this.reservacionService.getReservacion(reservacionId).subscribe(rsv => {
         this.reservacion = rsv;
         this.nombre = this.reservacion.nombre;
         this.isLoading = false;
       }, error => {
         this.alertCtrl.create({
           header:'Error',
-          message: 'Error al obtener las reservacion!',
+          message: 'Error al obtener la reservacion!',
           buttons: [
             {
               text: 'Ok', handler: () => {
-                this.router.navigate(['reservaciones']);
+                this.router.navigate(['resevaciones']);
               }
             }
           ]
-        }).then( alertEl => {
+        }).then(alertEl => {
           alertEl.present();
         });
       });
 
     });
+    
   }
 
   ngOnDestroy()

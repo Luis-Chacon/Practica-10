@@ -18,14 +18,14 @@ export class ReservacionesPage implements OnInit {
   
   constructor(
     private reservacionService: ReservacionService,
-    private loadingCtrl: LoadingController
-    ) { }
+    private loadinCtrl: LoadingController
+    ){}
 
   ngOnInit() 
   {
-      this.reservacionesSub = this.reservacionService.reservaciones.subscribe( rsvs =>{
-        this.reservaciones = rsvs;
-      });
+    this.reservacionesSub = this.reservacionService.reservaciones.subscribe( rsvs => {
+      this.reservaciones = rsvs;
+    });
   }
 
   ionViewWillEnter()
@@ -48,19 +48,18 @@ export class ReservacionesPage implements OnInit {
     }
   }
 
-  onRemoveReservacion(reservacionId: string, sldingEl: IonItemSliding)
+  onRemoveReservacion(reservacionId: string, slidingEl: IonItemSliding )
   {
-    console.log('onRemoveReservacion');
-    sldingEl.close();
-    this.loadingCtrl.create({
-      message:'eliminando reservación...'
+    slidingEl.close();
+    this.loadinCtrl.create({
+      message: 'eliminando reservación...'
     })
-      .then( loadingEl => {
-        loadingEl.present();
-        this.reservacionService.removeReservacion(reservacionId).subscribe(() => {
-          loadingEl.dismiss();
-        });
+    .then(loadinEl =>{
+      loadinEl.present();
+      this.reservacionService.removeReservacion(reservacionId).subscribe(() =>{
+        loadinEl.dismiss();
       });
+    });
   }
 
 }

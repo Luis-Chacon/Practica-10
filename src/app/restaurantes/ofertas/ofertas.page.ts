@@ -35,7 +35,7 @@ export class OfertasPage implements OnInit {
     });
   }
 
-  ngOnDeestroy()
+  ngOnDestroy()
   {
     if(this.ofertas)
     {

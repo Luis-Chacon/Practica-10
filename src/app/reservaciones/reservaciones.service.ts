@@ -22,6 +22,33 @@ export class ReservacionService
         return this._reservaciones.asObservable();
     }
 
+    getReservacion(reservacionId: string)
+    {
+        const url = environment.firebaseUrl + `reservaciones/${reservacionId}.json`;
+
+        return this.http.get<Reservacion>(url)
+            .pipe(map(dta => {
+                return new Reservacion(
+                    reservacionId,
+                    dta.restaurante,
+                    dta.nombre,
+                    dta.fecha,
+                    dta.imgUrl,
+                    dta.usuarioId
+                );
+            }));
+    }
+
+    updateReservacion(reservacionId: string, reservacion:Reservacion)
+    {
+        console.log('updateReservaciones');
+        const url = environment.firebaseUrl + `reservaciones/${reservacionId}.json`;
+
+        this.http.put<any>(url,{...reservacion}).subscribe(data => {
+            console.log(data);
+        });
+    }
+
     fetchReservaciones()
     {
         console.log('fetchResevaciones');
@@ -49,7 +76,7 @@ export class ReservacionService
         }));
     }
 
-    addReservacion(rest: Restaurante,nombre: string, horario: string)
+    addReservacion(rest: Restaurante,nombre:string, horario: string)
     {
         console.log(rest);
         console.log(horario);
@@ -67,45 +94,6 @@ export class ReservacionService
         });
     }
 
-    removeReservacion(reservacionId: string)
-    {
-        console.log('removeReservacion');
-        //let url = `${environment.firebaseUrl}reservaciones/${reservacionId}.json`;
-        //return this.http.delete(url)
-        return this.http.delete(`${environment.firebaseUrl}reservaciones/${reservacionId}.json`)
-            .pipe(switchMap (() =>{
-                return this.reservaciones;
-            }),take(1),tap(rsvs => {
-                this._reservaciones.next(rsvs.filter(r => r.Id !== reservacionId))
-            }))
-    }
-
-    getReservacion(reservacionId: string)
-    {
-        console.log('getReservacion');
-        const url= environment.firebaseUrl + `reservaciones/${reservacionId}.json`;
-
-        return this.http.get<Reservacion>(url)
-            .pipe(map(dta => {
-                return new Reservacion(
-                    reservacionId,
-                    dta.imgUrl,
-                    dta.restaurante,
-                    dta.nombre,
-                    dta.fecha,
-                    dta.usuarioId);
-            }));
-    }
-
-    updateReservacion(reservacionId: string, reservacion: Reservacion)
-    {
-        console.log('updateReservacion');
-        const url = environment.firebaseUrl + `reservaciones/${reservacionId}.json`;
-        this.http.put<any>(url,{...reservacion}).subscribe( data => {
-            console.log(data);
-        });
-    }
-
     constructor
     (
         private http: HttpClient,
@@ -115,5 +103,15 @@ export class ReservacionService
         this.loginService.usuarioId.subscribe(usuarioId => {
             this.usuarioId = usuarioId;
         });
+    }
+
+    removeReservacion(reservacionId: string){
+        console.log('removeReservacion');
+        return this.http.delete(`${environment.firebaseUrl}reservaciones/${reservacionId}.json`)
+            .pipe(switchMap(()=> {
+                return this.reservaciones;
+            }),take(1),tap( rsvs => {
+                this._reservaciones.next(rsvs.filter(r => r.Id !== reservacionId))
+            }))
     }
 }
