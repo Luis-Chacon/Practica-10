@@ -109,6 +109,7 @@ export class RestauranteDetallePage implements OnInit
 
   openReservaModal(modo:'select' | 'hoy')
   {
+    console.log('openReservaModal');
     this.modalCtrl.create({
       component: NuevaReservacionComponent,
       componentProps: {restaurante: this.restaurante, mode: modo}
@@ -129,6 +130,7 @@ export class RestauranteDetallePage implements OnInit
              result.data.horario);
 
            loadingEl.dismiss();
+
          });
        }
      });
