@@ -8,13 +8,15 @@ import { RestauranteDetallePageRoutingModule } from './restaurante-detalle-routi
 
 import { RestauranteDetallePage } from './restaurante-detalle.page';
 import { NuevaReservacionComponent } from 'src/app/reservaciones/nueva-reservacion/nueva-reservacion.component';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    RestauranteDetallePageRoutingModule
+    RestauranteDetallePageRoutingModule,
+    SharedModule
   ],
   declarations: [RestauranteDetallePage, NuevaReservacionComponent]
 })
