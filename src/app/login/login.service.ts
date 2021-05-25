@@ -27,6 +27,7 @@ export class LoginService
   // private _usuarioLoggeado = false;
 
   private _usuario = new BehaviorSubject<Usuario>(null);
+  
   get usuarioLoggeado()
   {
     //return this._usuarioLoggeado;

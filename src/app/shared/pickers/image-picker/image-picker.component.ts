@@ -33,9 +33,9 @@ export class ImagePickerComponent implements OnInit {
     }
   }
 
-  onPickerImage()
+  onPickImage()
   {
-    if(!Capacitor.isPluginAvailable('Camara') || this.usarPicker)
+    if(!Capacitor.isPluginAvailable('Camera') || this.usarPicker)
     {
       this.filePickerRef.nativeElement.click();
       return;

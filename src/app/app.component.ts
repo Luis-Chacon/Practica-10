@@ -32,8 +32,10 @@ export class AppComponent implements OnInit,OnDestroy {
 
     ngOnDestroy()
     {
-      this.loginService.logout();
-      this.router.navigateByUrl('/login');
+      if(this.loginSub)
+      {
+        this.loginSub.unsubscribe();
+      }
     }
 
 

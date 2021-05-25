@@ -4,6 +4,7 @@ import { ActionSheetController, AlertController, LoadingController, ModalControl
 import { Subscription } from 'rxjs';
 import { NuevaReservacionComponent } from 'src/app/reservaciones/nueva-reservacion/nueva-reservacion.component';
 import { ReservacionService } from 'src/app/reservaciones/reservaciones.service';
+import { MapModalComponent } from 'src/app/shared/map-modal/map-modal.component';
 
 import { Restaurante } from '../restaurante.model';
 import { RestauranteService } from '../restaurante.service';
@@ -179,6 +180,22 @@ export class RestauranteDetallePage implements OnInit
     {
       imageData = imageData;
     }
+  }
+
+  onMostrarMapa()
+  {
+    this.modalCtrl.create({component: MapModalComponent, componentProps: 
+    {
+      center:{
+        lat: this.restaurante.lat,
+        lng: this.restaurante.lng
+      },
+      selectable: false,
+      closeButtonText: 'cerrar',
+      titulo: 'ubicacion'
+    }}).then(modalEl => {
+      modalEl.present();
+    });
   }
 
 }

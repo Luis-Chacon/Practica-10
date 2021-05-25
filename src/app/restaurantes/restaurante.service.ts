@@ -56,7 +56,7 @@ export class RestauranteService
                 if(dta.hasOwnProperty(key))
                 {
                     restaurantes.push(
-                        new Restaurante(key, dta[key].titulo, dta[key].imgUrl, dta[key].platillos)
+                        new Restaurante(key, dta[key].titulo, dta[key].imgUrl, dta[key].platillos, dta[key].lat, dta[key].lng)
                     );
                 }
             }
@@ -79,7 +79,7 @@ export class RestauranteService
 
         return this.http.get<Restaurante>(environment.firebaseUrl + `restaurantes/${restauranteId}.json`)
         .pipe(map( dta => {
-            return new Restaurante(restauranteId, dta.titulo, dta.imgUrl, dta.platillos);
+            return new Restaurante(restauranteId, dta.titulo, dta.imgUrl, dta.platillos, dta.lat, dta.lng);
         }));
 
 
